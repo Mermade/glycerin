@@ -62,8 +62,12 @@ task createGeneratedSourcesDir {
     doLast { project.mkdir(generatedSourcesPath) }
 }
 
-task transformSchema {
-    doFirst { project.mkdir(generatedXsdDir) }
+task createGeneratedXsdDir {
+    outputs.dir generatedXsdDir
+    doLast { project.mkdir(generatedXsdDir) }
+}
+
+task transformSchema(dependsOn: createGeneratedXsdDir) {
     ant.xslt(in: 'src/main/resources/nitro-schema.xsd',
             style: 'src/main/resources/nitro-schema.xsl',
             out: "${generatedXsdDir}/nitro-schema.xsd")
